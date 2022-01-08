@@ -10,7 +10,7 @@ it('find element and click', function(){
 });
 
 it.only('saving value of an element and assert that', function(){
-    cy.visit("https://moinshawon.ml/")
+    cy.visit("https://moinshawon.github.io/")
     cy.url().should('include', 'moinshawon')                                // asserting url has that text
     cy.get('h1').should('include.text', 'MOINUL ISLAM')                     // accerting h1 has that text
     cy.get('#part-time > :nth-child(1) > :nth-child(2) > a').should($h => { // saving the text of that element in $h parameter 
