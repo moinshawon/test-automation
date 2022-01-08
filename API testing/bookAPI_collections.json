@@ -1,0 +1,538 @@
+{
+	"info": {
+		"_postman_id": "ba1a00c3-5c81-4df4-a417-98b7971c200b",
+		"name": "Simple book API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "API status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Statuss code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});                                  // to check the test passed or failed\r",
+							"\r",
+							"const response = pm.response.json(); // making the JSON file into variable\r",
+							"\r",
+							"console.log(response);               // printing it\r",
+							"\r",
+							"console.log(response.status);        // printing just status value\r",
+							"\r",
+							"console.log(response['status']);     // printing just status value\r",
+							"\r",
+							"pm.test(\"working fine\", () => {\r",
+							"    pm.expect(response.status).to.eql(\"OK\") // checking the status value is OK?\r",
+							"});\r",
+							"\r",
+							"postman.setNextRequest(\"list of books\")"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/status",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "list of books",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Statuss code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});                                              // checking status\r",
+							"\r",
+							"const response = pm.response.json();             // saving the json file into a var\r",
+							"\r",
+							"const nonFinctionBooks = response.filter((book) => book.available === true & book.type === \"non-fiction\"); // taking only books that are available and non fiction\r",
+							"\r",
+							"console.log(nonFinctionBooks);                   // printing the list of books \r",
+							"\r",
+							"const firstBook = nonFinctionBooks[0];           // storing the first book available and non fiction\r",
+							"\r",
+							"if (firstBook){\r",
+							"    pm.globals.set(\"bookID\", firstBook.id);      // creating a global var which stores first dict's id\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Book found\", () => {                              // testing any books are availsable or not\r",
+							"    pm.expect(firstBook).to.be.an('object');               // expecting the first book will be an object\r",
+							"    pm.expect(firstBook.available).to.be.true;             // expecting the value is true\r",
+							"    pm.expect(firstBook.available).to.eql(true);           // expecting the available value == true\r",
+							"    pm.expect(firstBook.type).to.eql(\"non-fiction\");       // expecting the type value = non-fiction\r",
+							"});\r",
+							"\r",
+							"// const nonFinctionBooks = response.filter((book) => book.type === \"non-fiction\"); // all non-fiction\r",
+							"// console.log(nonFinctionBooks)                  \r",
+							"\r",
+							"// pm.test(\"Book found\", () => {                    // testing any books are available or not\r",
+							"//     pm.expect(nonFinctionBooks[0]).to.be.an('object');     // expecting the first book will be an object\r",
+							"//     pm.expect(nonFinctionBooks[0].type).to.eql(\"non-fiction\");\r",
+							"// });\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/books",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"books"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "non-fiction",
+							"description": "what type of books i want to see",
+							"disabled": true
+						},
+						{
+							"key": "ja ja ja",
+							"value": "jajaja",
+							"description": "wrong one. it wont give error as we have one right key, value infront of it",
+							"disabled": true
+						},
+						{
+							"key": "limit",
+							"value": "1",
+							"description": "how many req to show",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get single book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Statuss code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"}); \r",
+							"\r",
+							"const response = pm.response.json();\r",
+							"\r",
+							"console.log(response);\r",
+							"\r",
+							"pm.test(\"available in stock\", () => {\r",
+							"    pm.expect(response[\"current-stock\"]).to.be.above(0); // current-stock key need to handled by this way\r",
+							"}); "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/books/:id",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"books",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{bookID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Order book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Statuss code is 201\", () => {\r",
+							"    pm.response.to.have.status(201);\r",
+							"}); \r",
+							"\r",
+							"const response = pm.response.json(); \r",
+							"\r",
+							"console.log(response.orderId);\r",
+							"\r",
+							"if (response){\r",
+							"    pm.globals.set(\"orderID\", response.orderId);      // set the orderID into global var\r",
+							"};"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"bookId\": {{bookID}},\r\n  \"customerName\": \"John\"\r\n}                              \r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all the book orders",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Statuss code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"}); "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get an order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Statuss code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"}); "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"bookId\": 1,\r\n  \"customerName\": \"John\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders/:orderId",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						":orderId"
+					],
+					"variable": [
+						{
+							"key": "orderId",
+							"value": "{{orderID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update an order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Statuss code is 204\", () => {\r",
+							"    pm.response.to.have.status(204);\r",
+							"}); "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"bookId\": 1,\r\n  \"customerName\": \"DJ {{$randomLastName}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders/:orderId",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						":orderId"
+					],
+					"variable": [
+						{
+							"key": "orderId",
+							"value": "{{orderID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete an order",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// pm.test(\"Statuss code is 404\", () => {\r",
+							"//     pm.response.to.have.status(404);\r",
+							"// }); "
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Statuss code is 204\", () => {\r",
+							"    pm.response.to.have.status(204);\r",
+							"}); \r",
+							"\r",
+							"postman.setNextRequest(null)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"bookId\": 1,\r\n  \"customerName\": \"John {{$randomLastName}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders/:orderId",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						":orderId"
+					],
+					"variable": [
+						{
+							"key": "orderId",
+							"value": "{{orderID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register API",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Statuss code is 409\", () => {\r",
+							"    pm.response.to.have.status(409);\r",
+							"}); "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"clientName\": \"Moin\",\r\n   \"clientEmail\": \"moin.islamshawon@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api-clients",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api-clients"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://simple-books-api.glitch.me"
+		},
+		{
+			"key": "accessToken",
+			"value": "b90d9dea83d1dee5d6366c1184f2b97de4488780e58dcdc8e96f3e0ce1126760"
+		}
+	]
+}
