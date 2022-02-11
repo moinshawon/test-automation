@@ -8,3 +8,6 @@
   - Find a clickable link from a page and click it. Go to next page, and click another link/button. Fill up something and search/enter. Come back again to the home page.
   - Copy and paste by using ActionChains
   - Log in, drop down, handle dynamic value change with JS
+
+## [USIS_Unit_testing_with_selenium](https://github.com/moinshawon/test-automation/blob/master/Selenium_Automation/retrieving_data_with_selenium.ipynb)
+> Go to an e-commerce website, search for a product, ask how many pages need to visit, check all the details, make a data frame using PD, and generate an excel sheet.
