@@ -9,5 +9,8 @@
   - Copy and paste by using ActionChains
   - Log in, drop down, handle dynamic value change with JS
 
-## [USIS_Unit_testing_with_selenium](https://github.com/moinshawon/test-automation/blob/master/Selenium_Automation/retrieving_data_with_selenium.ipynb)
-> Go to an e-commerce website, search for a product, ask how many pages need to visit, check all the details, make a data frame using PD, and generate an excel sheet.
+## [USIS_Unit_testing_with_selenium](https://github.com/moinshawon/test-automation/tree/master/Selenium_Automation/USIS_Unit_testing_with_selenium)
+> USIS scraping with unit testing framework
+
+## [Unit_test_with_selenium_practice](https://github.com/moinshawon/test-automation/tree/master/Selenium_Automation/web%20scraping_unit%20test_selenium)
+> Practiced some framework architecture of Unit testing
