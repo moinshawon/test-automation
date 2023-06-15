@@ -26,7 +26,7 @@ class PythonOrgSearch(unittest.TestCase):
     def test_usis(self):
         main_page = page.MainPage(self.driver)
         main_page.search_email_input = "sadique.tahmid.7@gmail.com"
-        main_page.search_password_input = "MetalGear13"
+        main_page.search_password_input = ""
         main_page.click_login_btn()
         main_page.click_std_drp_down()
         main_page.click_grade_sheet_btn()
